@@ -1,46 +1,13 @@
 const express = require('express');
+const blogController = require('../controllers/blogController');
 const Blog = require('../models/blogSchema');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    console.log(`Request made, URL:${req.url}`);
-    //res.send('<h1>Hello Express App</h1>')
-    //res.sendFile('./views/index.html', {root : __dirname});
-    //res.render('index', {title: 'Home'}); // using ejs templating
-    Blog.find()
-        .then( (result) => {
-            res.render('index', {title: 'Blogs Home Page', blogs: result});
-        })
-        .catch((err) => console.log(err));
-});
-
-router.get('/create', (req, res) => {
-    console.log(`Request made, URL:${req.url}`);
-    //res.send('<h1>Hello Express App</h1>')
-    //res.sendFile('./views/index.html', {root : __dirname});
-    res.render('create', {title: 'Blog create'}); // using ejs templating
-});
-
-router.get('/:id', (req, res) => {
-    const ID = req.params.id;
-    Blog.findById(ID)
-        .then((result) => {
-            console.log(result);
-            res.render('details', {blog: result});
-        })
-        .catch((err)=> console.log(err));
-});
-
-
-router.post('/', (req, res) => {
-    const blog = new Blog(req.body);
-    blog.save()
-        .then( (result) => {
-            res.redirect('/blogs')
-        })
-        .catch( (err) => console.log(err));
-});
+router.get('/', blogController.blog_all);
+router.get('/create', blogController.blog_create_get);
+router.get('/:id', blogController.blog_get_id);
+router.post('/', blogController.blog_create);
 
 /* any ajax request (fetch api) we cant send redirect
 you need to send response in json and client will convert json to object and use the redirect end point to move there
