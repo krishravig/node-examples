@@ -1,5 +1,13 @@
 const {read, readSync} = require('./filesystem/fileOperations');
 const stream = require('./filesystem/streamOperations');
+const _ = require('lodash');
+
+const greet = _.once(()=> {
+    console.log('hello');
+})
+
+greet();
+greet();
 
 const name = 'Ravi';
 console.log(name);
